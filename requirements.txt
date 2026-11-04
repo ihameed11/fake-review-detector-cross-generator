@@ -1,0 +1,9 @@
+# Pinned for macOS x86_64 (Intel): PyTorch dropped Intel Mac wheels after 2.2.2,
+# which in turn caps numpy<2 and requires older transformers/sentence-transformers.
+pandas
+scikit-learn
+matplotlib
+numpy<2
+torch==2.2.2
+transformers==4.44.2
+sentence-transformers==3.0.1
