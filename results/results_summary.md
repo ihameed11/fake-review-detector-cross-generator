@@ -38,14 +38,14 @@ Artifact: `results/confusion_matrices.png`
 
 The MLP above was trained only on genuine (`OR`) vs GPT-2-generated fake (`CG`) reviews. To
 check whether it learned "fake-ness" in general or just GPT-2's specific fingerprint, it was
-run — with no retraining or fine-tuning — on `data/modern_fakes.csv` (n=175), fake reviews
+run — with no retraining or fine-tuning — on `data/fakes_gemini.csv` (n=175), fake reviews
 written by Gemini, a generator it never saw during training. Same MiniLM (`all-MiniLM-L6-v2`)
 embeddings, same trained MLP, seed 42 throughout. Script: `src/unseen_generator_test.py`.
 
 | Fakes | Generator seen in training? | n | Fraction flagged fake |
 |---|---|---:|---:|
 | `CG` (held-out test split) | Yes (GPT-2) | 4,043 | 0.8662 |
-| `modern_fakes.csv` | No (Gemini) | 175 | 0.1943 |
+| `fakes_gemini.csv` | No (Gemini) | 175 | 0.1943 |
 
 **Gap: 0.6719.** The detector catches 87% of GPT-2 fakes but only 19% of Gemini fakes — it
 almost entirely fails to generalize to the unseen generator. This indicates the MLP mostly

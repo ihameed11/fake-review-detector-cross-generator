@@ -4,7 +4,7 @@ Unseen-generator generalization test.
 The supervised MLP detector (src/supervised_classifier.py) was trained only on
 OR (genuine) vs CG (GPT-2-generated fake) reviews. This script checks whether
 that detector generalizes to fakes from a generator it never saw during
-training: data/modern_fakes.csv, reviews written by Gemini, a modern LLM.
+training: data/fakes_gemini.csv, reviews written by Gemini, a modern LLM.
 
 Compares:
   - recall on held-out GPT-2 (CG) fakes (the generator it was trained on)
@@ -27,7 +27,7 @@ from supervised_classifier import (
     load_dataset,
 )
 
-MODERN_FAKES_PATH = "data/modern_fakes.csv"
+MODERN_FAKES_PATH = "data/fakes_gemini.csv"
 MODERN_EMBED_CACHE_PATH = "results/modern_fakes_embeddings.npz"
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 
@@ -76,7 +76,7 @@ def main():
     cg_recall = (cg_pred == 1).mean()
     print(f"\nHeld-out GPT-2 (CG) fakes: n={len(y_cg_test)}  recall={cg_recall:.4f}")
 
-    # Detection rate on the unseen generator (Gemini / modern_fakes.csv).
+    # Detection rate on the unseen generator (Gemini / fakes_gemini.csv).
     df = pd.read_csv(MODERN_FAKES_PATH)
     print(f"\nLoaded {len(df)} modern (Gemini) fake reviews from {MODERN_FAKES_PATH}")
     modern_embeddings = embed_modern_fakes(df["text"].tolist())
@@ -84,7 +84,7 @@ def main():
     # Same idea: every row here is fake by construction, so this is just the
     # fraction the model flagged as fake — its "detection rate" on this file.
     modern_detection_rate = (modern_pred == 1).mean()
-    print(f"Gemini (modern_fakes.csv): n={len(df)}  detection rate={modern_detection_rate:.4f}")
+    print(f"Gemini (fakes_gemini.csv): n={len(df)}  detection rate={modern_detection_rate:.4f}")
 
     gap = cg_recall - modern_detection_rate
     print("\n=== UNSEEN-GENERATOR COMPARISON ===")
